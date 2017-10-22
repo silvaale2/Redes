@@ -1,0 +1,85 @@
+Código fonte do Servidor:
+
+import socket
+from os import system
+import threading
+
+def atende(obj_conexao, endereco): 
+    dados = obj_conexao.recv(1024)
+    dados = dados.split("\n")
+    dados[0] = dados[0].replace('\r', '')
+    dados = dados[0].split(' ') 
+    print (dados)
+    if dados[0] == 'GET':
+        dados = dados[1]
+        dados = dados[1:]
+        print (dados)
+        try:            
+            f = open(dados,'r')
+            obj_conexao.send('HTTP/1.1 200 OK\n\n')
+            l = f.read(1024)
+            while l:
+                obj_conexao.send(l)
+                l = f.read(1024)
+        except IOError:
+            obj_conexao.send('HTTP/1.1 404 Bad Request\n\n')
+    else:
+        obj_conexao.send('HTTP/1.1 501 Not implemented\n\n')
+    obj_conexao.close()   
+ip_server = "0.0.0.0"
+porta_server = 9999
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((ip_server, porta_server))
+server.listen(5)
+print "Escutando  %s : %d" % (ip_server, porta_server)
+
+while True:
+    obj_conexao, endereco = server.accept()
+    print "Conectado por: ", endereco
+    thread = threading.Thread(target=atende, args=(obj_conexao, endereco),)
+    thread.run()
+    
+----------------------------------------------------------------------------
+Código fonte do cliente:
+from socket import *
+import sys
+
+serverHost = 'localhost'
+serverPort = 80
+url = sys.argv[1]
+if len(sys.argv) > 2:
+    serverPort = int(sys.argv[2])
+serverArq= sys.argv[1]
+server= sys.argv[0]
+print (server, serverArq, serverPort)
+sockobj = socket(AF_INET, SOCK_STREAM)
+ip = gethostbyname(serverArq)
+ip = ip.replace("","")
+print (ip, serverPort)
+sockobj.connect((ip, serverPort)) 
+msg = 'GET /' + ' HTTP/1.1\n\n'
+print (msg)
+sockobj.send(msg)
+dados = sockobj.recv(1024)
+#print (dados)
+x = dados
+while dados:
+    dados = sockobj.recv(1024)
+    x = x + dados
+z = x.find('\n')
+resposta = x[:z] 
+resposta = resposta.split(' ') 
+print (resposta)
+
+if resposta[2] == 'OK' and resposta[1] == '200':
+    z = x.find('\n\n')
+    x = x[z+2:]
+    f = open('saida','w')    
+    f.write(x)
+    f.close()
+else:
+    print 'Arquivo nao existe'
+sockobj.close()
+
+
+

@@ -1,0 +1,18 @@
+Conforme proposto, foram implementados duas aplicações cliente/servidor, operando sobre um socket, sobre TCP/IP.
+O servidor é executado através de linhas de comandos, onde o mesmo fica aguardando conexões http, onde são passados pela navegador um arquivo e uma porta.
+Caso o arquivo exista na pasta onde o servidor foi executado, o mesmo será enviado para o navegador. Caso o arquivo não exista ou o nome digitdo esteja errado, retornará a uma mensagem erro. Esse servidor foi desenvolvido para aceitar diversas conexões, pois utiliza multitheads para isso.
+Já o cliente conseguirá através de linhas de comando, passando o site e a porta (quando a mesma não for a porta 80), acessar um arquivo e salvá-lo, em um arquivo chamado saida, caso aconteça algum erro, exibirá uma mensagem informando.
+
+As aplicações foram desenvolvidas utilizando a linguagem python, portando será necessário que a mesma esteja instalado no computador.
+
+para executar o servidor no terminal:
+$ python  nome_arquivo(servido_final.py) 
+
+O servidor esta rotando na porta 9999, então vá no navegador, digite o endereço IP do servidor e a porta 9999, utilize a barra "/" e o nome do arquivo, se ele estiver na pastas será carregado para o navegador, caso contrário será exibido uma mensagem de erro.
+O servidor exibe o endereço IP e a porta dos clientes conectados nele
+
+para executar o cliente no terminal:
+
+$python cliente_final.py site_desejado porta /arquivo
+
+O cliente entrará com o nome do servidor, o endereço, porta e o arquivo que deseja, o cliente tratará a tradução de nomes em endereço IP correspondente ao site (DNS), e criará um arquivo "saida" com as informações do arquivo.
