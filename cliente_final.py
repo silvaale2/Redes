@@ -9,19 +9,22 @@ if len(sys.argv) > 2:
 serverArq= sys.argv[1]
 server= sys.argv[0]
 print (server, serverArq, serverPort)
-sockobj = socket(AF_INET, SOCK_STREAM)
-ip = gethostbyname(serverArq)
-ip = ip.replace("","")
-print (ip, serverPort)
-sockobj.connect((ip, serverPort)) 
+
+cliente = socket(AF_INET, SOCK_STREAM)
+#cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+#ip = gethostbyname(serverArq)
+#ip = ip.replace("","")
+#print (ip, serverPort)
+cliente.connect((serverHost, serverPort)) 
 msg = 'GET /' + ' HTTP/1.1\n\n'
 print (msg)
-sockobj.send(msg)
-dados = sockobj.recv(1024)
+cliente.send(msg)
+dados = cliente.recv(1024)
 #print (dados)
 x = dados
 while dados:
-    dados = sockobj.recv(1024)
+    dados = cliente.recv(1024)
     x = x + dados
 z = x.find('\n')
 resposta = x[:z] 
@@ -31,9 +34,9 @@ print (resposta)
 if resposta[2] == 'OK' and resposta[1] == '200':
     z = x.find('\n\n')
     x = x[z+2:]
-    f = open('saida','w')    
+    f = open(' ','w')    
     f.write(x)
     f.close()
 else:
     print 'Arquivo nao existe'
-sockobj.close()
+cliente.close()
