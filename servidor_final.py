@@ -49,12 +49,12 @@ while True:
     <html>
     <body>
     <?
-    if ($dir=opendir("/home/alexandre/aaa/")){
+    if ($dir=opendir("/home/alexandre/"))
     $i=1;
-    ?>        
-    <a href="file://./cliente_final.py"> cliente_final.py  </a><br>
-    <a href="file://./servidor_final.py"> servidor_final.py  </a><br>
-    <a href="file://./tp1.txt"> tp1.txt  </a><br>
+    ?>  
+    <a href="cliente_final.py">cliente_final.py</a><br>
+    <a href="servidor_final.py">servidor_final.py</a><br>
+    <a href="tp1.txt">tp1.txt</a><br>
     </body>
     </html>     
     """) 
